@@ -32,7 +32,7 @@ def plot_audio():
     plt.clf()
     plt.plot(x, y_l)
     plt.plot(x, y_r)
-    plt.savefig("Python Audio Processing/AudioToyBox/media/amplitude_plot.jpg", dpi=350)
+    plt.savefig("media/amplitude_plot.jpg", dpi=350)
 
     return True
 

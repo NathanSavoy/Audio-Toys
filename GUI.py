@@ -10,20 +10,28 @@ import signal_processing.analysis as sp
 root = Tk()
 root.geometry('800x400')
 root.title('Audio ToyBox')
-#filename = StringVar()
-#filename.set("No File Selected")
+root.config(bg='gray21')
+filename = StringVar()
+filename.set("No File Selected")
+bpm = StringVar()
+bpm.set("")
+key = StringVar()
+key.set("")
+norm = StringVar()
+norm.set("")
+
 img = ""
 
 ### FUNCTIONS ###
 ###
 def import_audio():
-    filename = fd.askopenfilename(
+    filename_ = fd.askopenfilename(
         title='Open a file',
         initialdir='/',
         filetypes=[('Wave Files', '*.wav')]
         )
-#    filename.set(filename_)
-    sp.import_audio(str(filename))
+    filename.set(filename_)
+    sp.import_audio(str(filename_))
     print("Analyzing Audio...")
     if (sp.plot_audio()):
         print("Updating Image...")
@@ -37,10 +45,63 @@ def update_image():
     label.configure(image=img)
     label.image=img
 
+def analyze_audio():
+    print("Run Analysis")
+
 
 
 ### GUI ELEMENTS ###
 ###
+## FRAMES ##
+upper_frame = Frame(root, width=700, height=100, bg="gray64")
+upper_frame.pack(fill="both", expand=True, padx=20, pady=20)
+
+lower_frame = Frame(root, width=700, height=200, bg="gray64")
+lower_frame.pack(fill="both", expand=True, padx=20, pady=20)
+
+# upper frame elements 
+## sub-frames 
+# rows
+uf_row0 = Frame(upper_frame, width=660, height=20, bg="gray64")
+uf_row0.pack(fill="x", expand=True, padx=4, pady=0)
+uf_row1 = Frame(upper_frame, width=660, height=20, bg="gray64")
+uf_row1.pack(fill="x", expand=True, padx=4, pady=0)
+uf_row2 = Frame(upper_frame, width=660, height=40, bg="gray64")
+uf_row2.pack(fill="x", expand=True, padx=4, pady=5)
+
+# columns
+uf_row1_c0 = Frame(uf_row1, bg="gray64")
+uf_row1_c0.place(relx=.5, rely=.5,anchor= CENTER)
+
+uf_row2_c0 = Frame(uf_row2, bg="gray64")
+uf_row2_c0.place(relx=.5, rely=.5,anchor= CENTER)
+
+## widgets 
+title = Label(uf_row0, bd=0, textvariable=filename, width=50, height=1, bg="gray64")
+title.pack(fill="both", expand=True)
+
+bpm_lab = Label(uf_row1_c0, bd=0, text="BPM:", bg="gray64")
+bpm_lab.grid(row=0, column=0, padx=10, pady=0)
+bpm_val = Label(uf_row1_c0, bd=0, textvariable=bpm, width=5, height=1, bg="gray64")
+bpm_val.grid(row=0, column=1, padx=10, pady=0)
+
+key_lab = Label(uf_row1_c0, bd=0, text="Key:", bg="gray64")
+key_lab.grid(row=0, column=2, padx=10, pady=0)
+key_val = Label(uf_row1_c0, bd=0, textvariable=key, width=5, height=1, bg="gray64")
+key_val.grid(row=0, column=3, padx=10, pady=0)
+
+norm_lab = Label(uf_row1_c0, bd=0, text="Normalization:", bg="gray64")
+norm_lab.grid(row=0, column=4, padx=10, pady=0)
+norm_val = Label(uf_row1_c0, bd=0, textvariable=norm, width=5, height=1, bg="gray64")
+norm_val.grid(row=0, column=5, padx=10, pady=0)
+
+import_btn = Button(uf_row2_c0, text="Import New", width=10, height=1, command=import_audio, bg="red3")
+import_btn.grid(row=0, column=0, padx=10, pady=5)
+
+analyze_btn = Button(uf_row2_c0, text="Analyze Audio", width=15, height=1, command=analyze_audio, bg="green3")
+analyze_btn.grid(row=0, column=1, padx=10, pady=5)
+
+'''
 # button
 import_btn = Button(
     root, 
@@ -62,5 +123,5 @@ frame.pack_propagate(0)
 frame.pack(padx=30, pady=30)
 label = Label(frame, image='')
 label.pack()
-
+'''
 root.mainloop()
