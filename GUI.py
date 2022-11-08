@@ -32,23 +32,24 @@ def import_audio():
         )
     filename.set(filename_)
     sp.import_audio(str(filename_))
-    print("Analyzing Audio...")
-    if (sp.plot_audio()):
-        print("Updating Image...")
-        update_image()
+    print("Importing Audio...")
 
-def update_image():
-    label.configure(image='')
-    label.image=None
-    img_ = Image.open("Python Audio Processing/AudioToyBox/media/amplitude_plot.jpg")
+def update_image(frame, file):
+    frame.configure(image='')
+    frame.image=None
+    img_ = Image.open(str(file))
     img = ImageTk.PhotoImage(img_.resize((700, 150)))
-    label.configure(image=img)
-    label.image=img
+    frame.configure(image=img)
+    frame.image=img
 
 def analyze_audio():
-    print("Run Analysis")
-
-
+    print("Analyzing Audio...")
+    if (sp.plot_amp()):
+        print("Plotting Amplitude...")
+        update_image(amp_plot, "media/amplitude_plot.jpg")
+    if (sp.plot_tf()):
+        print("Plotting Time-Frequency Analysis...")
+        update_image(tf_plot, "media/tf_plot.jpg")
 
 ### GUI ELEMENTS ###
 ###
@@ -68,6 +69,11 @@ uf_row1 = Frame(upper_frame, width=660, height=20, bg="gray64")
 uf_row1.pack(fill="x", expand=True, padx=4, pady=0)
 uf_row2 = Frame(upper_frame, width=660, height=40, bg="gray64")
 uf_row2.pack(fill="x", expand=True, padx=4, pady=5)
+
+lf_row0 = Frame(lower_frame, width=600, height=80, bg="white")
+lf_row0.pack(fill="x", expand=True, padx=5, pady=5)
+lf_row1 = Frame(lower_frame, width=600, height=80, bg="yellow")
+lf_row1.pack(fill="x", expand=True, padx=5, pady=5)
 
 # columns
 uf_row1_c0 = Frame(uf_row1, bg="gray64")
@@ -100,6 +106,14 @@ import_btn.grid(row=0, column=0, padx=10, pady=5)
 
 analyze_btn = Button(uf_row2_c0, text="Analyze Audio", width=15, height=1, command=analyze_audio, bg="green3")
 analyze_btn.grid(row=0, column=1, padx=10, pady=5)
+
+amp_plot = Label(lf_row0, image='')
+amp_plot.pack()
+
+tf_plot = Label(lf_row1, image='')
+tf_plot.pack()
+
+
 
 '''
 # button
