@@ -1,6 +1,9 @@
 ----THE AUDIO TOY BOX----------------------------------------------------------
+
 --- Nathan Savoy --------------------------------------------------------------
+
 --- Fall 2022 -----------------------------------------------------------------
+
 
 Hey there! Thanks for taking the time to check out my little project. I hope 
 you find something here of interest, whether you were sent here by my resume,
