@@ -23,6 +23,9 @@ Putting this project together also provides an opportunity for me to practice
 and demonstrate my knowledge of software development more generally, including
 the architecture of a "shippable" program, and the construction of a basic GUI.
 
+If you have any questions or would like to get in touch, feel free to shoot me
+an email at nsavoy7@gmail.com.
+
 I hope you enjoy, and have yourself a wonderful day!
 
 Cheers,
