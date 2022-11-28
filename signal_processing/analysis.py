@@ -13,6 +13,7 @@ def import_audio(path):
     global data
     samplerate, data = wavfile.read(path)
 
+
 # conversion from frequency to note ('tuning' (optional) specifies frequency of A4)
 def freq_to_note(freq, tuning=440):
     notes = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
@@ -105,4 +106,19 @@ def plot_tf(colors=['b','y','r']):
     plt.title("Time-Frequency Plot")
     plt.savefig("media/tf_plot.jpg", dpi=350)
     return True
+
+# find tempo
+def find_tempo():
+    data_ = data[30*samplerate:55*samplerate,0]
+    t = np.linspace(0, len(data_), len(data_))
+    amplitude = np.max(data_)
+    errs = np.array([])
+
+    for i in range(55, 200): # check tempos between 40 and 200
+        fit_ = np.abs(amplitude*np.cos(np.pi*(i/60)*(t/samplerate)))
+        err = ((np.abs(data_) - fit_)**2).mean()
+        errs = np.append(errs, err)
+    
+    tempo = 55 + np.argmax(errs)
+    return(tempo)
 
