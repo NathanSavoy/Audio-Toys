@@ -50,6 +50,7 @@ def analyze_audio():
     if (sp.plot_tf()):
         print("Plotting Time-Frequency Analysis...")
         update_image(tf_plot, "media/tf_plot.jpg")
+    bpm.set(sp.find_tempo())
 
 ### GUI ELEMENTS ###
 ###
