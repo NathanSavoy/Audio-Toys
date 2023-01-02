@@ -51,6 +51,7 @@ def analyze_audio():
         print("Plotting Time-Frequency Analysis...")
         update_image(tf_plot, "media/tf_plot.jpg")
     bpm.set(sp.find_tempo())
+    key.set(sp.determine_key())
 
 ### GUI ELEMENTS ###
 ###
@@ -94,7 +95,7 @@ bpm_val.grid(row=0, column=1, padx=10, pady=0)
 
 key_lab = Label(uf_row1_c0, bd=0, text="Key:", bg="gray64")
 key_lab.grid(row=0, column=2, padx=10, pady=0)
-key_val = Label(uf_row1_c0, bd=0, textvariable=key, width=5, height=1, bg="gray64")
+key_val = Label(uf_row1_c0, bd=0, textvariable=key, width=10, height=1, bg="gray64")
 key_val.grid(row=0, column=3, padx=10, pady=0)
 
 norm_lab = Label(uf_row1_c0, bd=0, text="Normalization:", bg="gray64")
