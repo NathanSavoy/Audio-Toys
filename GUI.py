@@ -100,7 +100,7 @@ key_val.grid(row=0, column=3, padx=10, pady=0)
 
 norm_lab = Label(uf_row1_c0, bd=0, text="Loudness:", bg="gray64")
 norm_lab.grid(row=0, column=4, padx=10, pady=0)
-norm_val = Label(uf_row1_c0, bd=0, textvariable=norm, width=5, height=1, bg="gray64")
+norm_val = Label(uf_row1_c0, bd=0, textvariable=norm, width=7, height=1, bg="gray64")
 norm_val.grid(row=0, column=5, padx=10, pady=0)
 
 import_btn = Button(uf_row2_c0, text="Import New", width=10, height=1, command=import_audio, bg="red3")
