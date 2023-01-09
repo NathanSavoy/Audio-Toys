@@ -33,6 +33,9 @@ def import_audio():
     filename.set(filename_)
     sp.import_audio(str(filename_))
     print("Importing Audio...")
+    if (sp.plot_amp()):
+        print("Plotting Amplitude...")
+        update_image(amp_plot, "media/amplitude_plot.jpg")
 
 def update_image(frame, file):
     frame.configure(image='')
@@ -44,14 +47,14 @@ def update_image(frame, file):
 
 def analyze_audio():
     print("Analyzing Audio...")
-    if (sp.plot_amp()):
-        print("Plotting Amplitude...")
-        update_image(amp_plot, "media/amplitude_plot.jpg")
     if (sp.plot_tf()):
         print("Plotting Time-Frequency Analysis...")
         update_image(tf_plot, "media/tf_plot.jpg")
-    bpm.set(sp.find_tempo())
+    print("Finding Key...")
     key.set(sp.determine_key())
+    print("Finding Tempo...")
+    bpm.set(sp.find_tempo())
+
 
 ### GUI ELEMENTS ###
 ###
