@@ -4,15 +4,12 @@ from scipy.fftpack import fft, ifft
 import numpy as np
 import matplotlib.pyplot as plt
 
-# turn off plot axes
-#plt.axis('off')
 
 # import data #
 def import_audio(path):
     global samplerate
     global data
     samplerate, data = wavfile.read(path)
-
 
 # conversion from frequency to note ('tuning' (optional) specifies frequency of A4)
 def freq_to_note(freq, tuning=440):
@@ -38,11 +35,15 @@ def plot_amp():
     y_l = abs(data[:,0])
     y_r = -abs(data[:,1])
     #x_ticks = range(0, len(data), 4*samplerate)
-    plt.axis('off')
     plt.clf()
+    fig = plt.figure(frameon = False, figsize=(7.8, 1.5))
+    ax = plt.Axes(fig, [0., 0., 1., 1.], )
+    plt.axis('off')
+    ax.get_xaxis().set_visible(False) 
+    ax.get_yaxis().set_visible(False) 
     plt.plot(x, y_l)
     plt.plot(x, y_r)
-    plt.savefig("media/amplitude_plot.jpg", dpi=350)
+    plt.savefig("media/amp_plot.png", bbox_inches='tight', pad_inches = 0, dpi=500)
 
     return True
 
@@ -107,14 +108,17 @@ def tf_analysis(samplerate, data, bands=[0,200,1200,2400,8000]):
 # generate plot #
 def plot_tf(colors=['cornflowerblue','green','white']):
     plt_data = tf_analysis(samplerate, data)
-    plt.axis('off')
     plt.clf()
+    fig = plt.figure(frameon = False, figsize=(7.8, 1.5))
+    #fig.set_size_inches(8,1)
+    ax = plt.Axes(fig, [0., 0., 1., 1.])
+    plt.axis('off')
+    ax.get_xaxis().set_visible(False) 
+    ax.get_yaxis().set_visible(False) 
     plt.plot(0.75*plt_data[1], alpha = 0.7, color = colors[1], label="Mid") # mids
     plt.plot(plt_data[0], alpha = 0.7, color = colors[0], label="Low") # lows
-    plt.plot(plt_data[2], alpha = 0.7, color = colors[2], label="High") # highs
-    plt.legend(loc="upper right")
-    plt.title("Time-Frequency Plot")
-    plt.savefig("media/tf_plot.jpg", dpi=350)
+    plt.plot(0.75*plt_data[2], alpha = 0.3, color = colors[2], label="High") # highs
+    plt.savefig("media/tf_plot.png", bbox_inches='tight', pad_inches = 0, dpi=500)
     return True
 
 # find tempo #
