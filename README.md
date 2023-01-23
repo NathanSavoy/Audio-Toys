@@ -1,4 +1,4 @@
-----THE AUDIO TOY BOX----------------------------------------------------------
+--- THE AUDIO TOY BOX ---------------------------------------------------------
 
 --- Nathan Savoy --------------------------------------------------------------
 
@@ -19,9 +19,10 @@ frequency analysis, and linear regression for tempo determination. Determination
 of the song's key will rely on frequency spectrum analysis and a good deal of
 music theory.
 
-Putting this project together also provides an opportunity for me to practice
-and demonstrate my knowledge of software development more generally, including
-the architecture of a "shippable" program, and the construction of a basic GUI.
+Putting this project together also provides an opportunity for me to hone my 
+development skills more generally, by gaining more exposure to areas including
+version control, clean coding, GUI design, and everything else that goes into
+a "finished" software product. 
 
 If you have any questions or would like to get in touch, feel free to shoot me
 an email at nsavoy7@gmail.com.
