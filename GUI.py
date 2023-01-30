@@ -47,7 +47,7 @@ def import_audio():
     else:
         strt_ = len(filepath_) - filepath_[::-1].find("/")
         end_ = filepath_.find(".")
-        filename.set(filepath_[strt_:end_].capitalize())
+        filename.set(filepath_[strt_:end_].title())
 
     sp.import_audio(str(filepath_))
     print("Plotting Amplitude...")
@@ -55,20 +55,27 @@ def import_audio():
     root.update_idletasks()
     if (sp.plot_amp()):
         update_image(amp_cont, "media/amp_plot.png")
+        update_image(tmln_cont, "media/timeline.png")
     print("Ready for Analysis!")
     status.set(" Ready for Analysis!")   
 
 def update_image(cont, file):
     global amp_img
     global tf_img
+    global tln_img
     if (file == "media/amp_plot.png"):
-        amp_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.25*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
+        amp_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.15*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
         lower_frame.itemconfig(cont,image=amp_img)
     elif (file == "media/tf_plot.png"):
-        tf_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.25*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
+        tf_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.15*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
         lower_frame.itemconfig(cont, image=tf_img)
+    elif (file == "media/timeline.png"):
+        tln_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.15*lower_frame.winfo_width()), int(lower_frame.winfo_height()/5))))
+        lower_frame.itemconfig(cont, image=tln_img)
     else: 
-        print("Error in update_image: Canvas not found")
+        print("Error in update_image(): Canvas not found")
+        status.set("Error in update_image(): Canvas not found")
+
 
 def analyze_audio():
     print("Analyzing Audio...")
@@ -163,8 +170,9 @@ import_btn.grid(row=0, column=0, padx=10, pady=5)
 analyze_btn = Button(uf_row2_c0, text="Analyze Audio", width=15, height=1, command=analyze_audio, bg=hlt2_clr)
 analyze_btn.grid(row=0, column=1, padx=10, pady=5)
 
-amp_cont = lower_frame.create_image(-50, 0, anchor=NW)
-tf_cont = lower_frame.create_image(-50, 150, anchor=NW)
+amp_cont = lower_frame.create_image(-40, 0, anchor=NW)
+tf_cont = lower_frame.create_image(-40, 150, anchor=NW)
+tmln_cont = lower_frame.create_image(-17, 180, anchor=SW)
 
 status_lab = Label(status_frame, bd=0, textvariable=status, width=39, height=1, bg=bkg_clr, font='Helvetica 10 italic', anchor="w", justify=LEFT)
 status_lab.grid(row=0, column=0, padx=2, pady=0)

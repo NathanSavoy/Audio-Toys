@@ -3,6 +3,8 @@ from scipy.io import wavfile
 from scipy.fftpack import fft, ifft
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import time
 from src.params import *
 
 # import data #
@@ -31,10 +33,10 @@ def gaussian(x, mean, sd):
 
 # generate amplitude plot of signal 
 def plot_amp():
+    plot_timeline()
     x = np.arange(0, len(data))
     y_l = abs(data[:,0])
     y_r = -abs(data[:,1])
-    #x_ticks = range(0, len(data), 4*samplerate)
     plt.clf()
     fig = plt.figure(frameon = False, figsize=(7.8, 1.5))
     ax = plt.Axes(fig, [0., 0., 1., 1.], )
@@ -46,6 +48,28 @@ def plot_amp():
     plt.savefig("media/amp_plot.png", bbox_inches='tight', pad_inches = 0, dpi=500)
 
     return True
+
+# generate a timeline of audio
+def plot_timeline():
+    ax = plt.subplot(1, 1, 1)
+    ax.spines['right'].set_color('none')
+    ax.spines['left'].set_color('none')
+    ax.yaxis.set_major_locator(ticker.NullLocator())
+    ax.spines['top'].set_color('none')
+    ax.xaxis.set_ticks_position('bottom')
+    ax.tick_params(which='major', direction='inout', width=0.5, length=10)
+    ax.tick_params(which='minor', direction='inout', width=0.5, length=5)
+    ax.set_xlim(0, data.shape[0]/samplerate)
+    ax.set_ylim(0, 1)
+    ax.patch.set_alpha(0.0)
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(len(data)/(10*samplerate)))
+    ax.xaxis.set_minor_locator(ticker.MultipleLocator(len(data)/(50*samplerate)))
+    formatter = ticker.FuncFormatter(lambda s, x: time.strftime('%M:%S', time.gmtime(s)))
+    ax.xaxis.set_major_formatter(formatter)
+    plt.xticks(fontsize=5)
+    plt.subplots_adjust(left=0.0, right=0.75, bottom=0.025, top=0.05)
+    plt.savefig("media/timeline.png", bbox_inches='tight', pad_inches = 0, dpi=500, transparent=True)
+
 
 ### TIME FREQUENCY ANALYSIS ###
 # Gaussian Windowed Fourier Transform 
