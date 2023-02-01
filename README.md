@@ -26,10 +26,9 @@ gained exposure to topics including version control, clean coding, GUI design,
 and much else that goes into the creation a software product. 
 
 As my primary goal is to learn, I welcome and feedback on my design or coding
-practices, or anything else that stands out to you.
-
-If you have any questions or would like to get in touch, feel free to shoot me
-an email at nsavoy7@gmail.com.
+practices, or anything else that stands out to you. If you have any questions
+or would like to get in touch, feel free to shoot me an email at 
+nsavoy7@gmail.com.
 
 I hope you enjoy, and look forward to hearing from you!
 
