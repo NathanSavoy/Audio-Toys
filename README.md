@@ -30,7 +30,8 @@ practices, or anything else that stands out to you. If you have any questions
 or would like to get in touch, feel free to shoot me an email at 
 nsavoy7@gmail.com.
 
-I hope you enjoy, and look forward to hearing from you!
+I hope you enjoy, and am look forward to hearing from you!
 
 Cheers,
+
 Nate
