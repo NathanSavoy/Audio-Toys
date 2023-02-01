@@ -1,18 +1,22 @@
+### BUILD GUI AND POPULATE FIELDS FROM src
+##########################################
 from tkinter import *
-import tkinter.messagebox as mb
 from tkinter import filedialog as fd
 from PIL import ImageTk,Image
-import src.analysis as sp
-from src.params import *
 from tinytag import TinyTag
-
+from src.params import bkg_clr, frg_clr, hlt1_clr, hlt2_clr, hlt3_clr, txt_clr
+import src.fileHandler as file
+import src.keyAnalysis as keys
+import src.loudnessAnalysis as loudness
+import src.plotter as plots
+import src.tempoAnalysis as tempo
 
 ### INITIALIZATION ###
 ###
 root = Tk()
 root.geometry('800x480')
 root.title('Audio ToyBox')
-root.config(bg=sp.frg_clr)
+root.config(bg=frg_clr)
 filepath = StringVar()
 filepath.set("")
 filename = StringVar()
@@ -38,9 +42,7 @@ def import_audio():
         initialdir='/',
         filetypes=[('Wave Files', '*.wav')]
         )
-
     filepath.set(filepath_)
-    
     metadata = TinyTag.get(filepath_)
     if (metadata.title != None):
         filename.set(metadata.title)
@@ -48,29 +50,36 @@ def import_audio():
         strt_ = len(filepath_) - filepath_[::-1].find("/")
         end_ = filepath_.find(".")
         filename.set(filepath_[strt_:end_].title())
+    lower_frame.itemconfig(amp_cont, image="")
+    lower_frame.itemconfig(tmln_cont, image="")
+    lower_frame.itemconfig(tf_cont, image="")
 
-    sp.import_audio(str(filepath_))
     print("Plotting Amplitude...")
-    status.set(" Plotting Amplitude...")    
+    status.set(" Plotting Amplitude...")   
     root.update_idletasks()
-    if (sp.plot_amp()):
+    if file.importAudio(str(filepath_)):
+        keys.init()
+        loudness.init()
+        tempo.init()
+        plots.init()
+    if plots.plot_amp():
         update_image(amp_cont, "media/amp_plot.png")
         update_image(tmln_cont, "media/timeline.png")
-    print("Ready for Analysis!")
-    status.set(" Ready for Analysis!")   
+        print("Ready for Analysis!")
+        status.set(" Ready for Analysis!")   
 
 def update_image(cont, file):
     global amp_img
     global tf_img
     global tln_img
     if (file == "media/amp_plot.png"):
-        amp_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.15*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
+        amp_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.2*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
         lower_frame.itemconfig(cont,image=amp_img)
     elif (file == "media/tf_plot.png"):
-        tf_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.15*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
+        tf_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.2*lower_frame.winfo_width()), int(lower_frame.winfo_height()/2))))
         lower_frame.itemconfig(cont, image=tf_img)
     elif (file == "media/timeline.png"):
-        tln_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.15*lower_frame.winfo_width()), int(lower_frame.winfo_height()/5))))
+        tln_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.2*lower_frame.winfo_width()), int(lower_frame.winfo_height()/5))))
         lower_frame.itemconfig(cont, image=tln_img)
     else: 
         print("Error in update_image(): Canvas not found")
@@ -84,23 +93,23 @@ def analyze_audio():
     print("Plotting Time-Frequency Analysis...")
     status.set(" Generating Time-Frequency Analysis...")
     root.update_idletasks()
-    if (sp.plot_tf()):
+    if (plots.plot_tf()):
         update_image(tf_cont, "media/tf_plot.png")
     
     print("Analyzing Key...")
     status.set(" Analyzing Key (This may take a while)...")
     root.update_idletasks()
-    key.set(sp.determine_key())
+    key.set(keys.determine_key())
     
     print("Analyzing Tempo...")
     status.set(" Analyzing Tempo...")
     root.update_idletasks()
-    bpm.set(sp.find_tempo())
+    bpm.set(tempo.find_tempo())
     
     print("Analyzing Loudness...")
     status.set(" Analyzing Loudness...")
     root.update_idletasks()
-    norm.set(str(sp.find_loudness()) + " dB")
+    norm.set(str(loudness.find_loudness()) + " dB")
 
     print("Analysis Complete!")
     status.set(" Analysis Complete!")   
@@ -132,11 +141,6 @@ uf_row1 = Frame(upper_frame, width=660, height=20, bg=bkg_clr)
 uf_row1.pack(fill="x", expand=True, padx=4, pady=0)
 uf_row2 = Frame(upper_frame, width=660, height=40, bg=bkg_clr)
 uf_row2.pack(fill="x", expand=True, padx=4, pady=5)
-
-#lf_row0 = Canvas(lower_frame, width=700, height=90, bg=bkg_clr)
-#lf_row0.pack(fill="x", expand=True, padx=0, pady=5)
-#lf_row1 = Canvas(lower_frame, width=700, height=90, bg="red")
-#lf_row1.pack(fill="x", expand=True, padx=0, pady=5)
 
 # columns
 uf_row1_c0 = Frame(uf_row1, bg=bkg_clr)
@@ -170,9 +174,9 @@ import_btn.grid(row=0, column=0, padx=10, pady=5)
 analyze_btn = Button(uf_row2_c0, text="Analyze Audio", width=15, height=1, command=analyze_audio, bg=hlt2_clr)
 analyze_btn.grid(row=0, column=1, padx=10, pady=5)
 
-amp_cont = lower_frame.create_image(-40, 0, anchor=NW)
-tf_cont = lower_frame.create_image(-40, 150, anchor=NW)
-tmln_cont = lower_frame.create_image(-17, 180, anchor=SW)
+amp_cont = lower_frame.create_image(-45, 0, anchor=NW)
+tf_cont = lower_frame.create_image(-45, 150, anchor=NW)
+tmln_cont = lower_frame.create_image(-22, 180, anchor=SW)
 
 status_lab = Label(status_frame, bd=0, textvariable=status, width=39, height=1, bg=bkg_clr, font='Helvetica 10 italic', anchor="w", justify=LEFT)
 status_lab.grid(row=0, column=0, padx=2, pady=0)
