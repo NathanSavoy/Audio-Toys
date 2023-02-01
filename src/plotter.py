@@ -14,8 +14,6 @@ def init():
     global data
     samplerate = file.samplerate_
     data = file.data_
-    print(samplerate)
-    print(data)
 
 # generate amplitude plot of signal 
 def plot_amp():

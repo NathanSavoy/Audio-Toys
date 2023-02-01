@@ -34,7 +34,6 @@ status.set(" Awaiting Import...")
 ### FUNCTIONS ###
 ###
 def import_audio():
-    print("Importing Audio...")
     status.set(" Importing Audio...")
     root.update_idletasks()
     filepath_ = fd.askopenfilename(
@@ -53,8 +52,6 @@ def import_audio():
     lower_frame.itemconfig(amp_cont, image="")
     lower_frame.itemconfig(tmln_cont, image="")
     lower_frame.itemconfig(tf_cont, image="")
-
-    print("Plotting Amplitude...")
     status.set(" Plotting Amplitude...")   
     root.update_idletasks()
     if file.importAudio(str(filepath_)):
@@ -65,7 +62,6 @@ def import_audio():
     if plots.plot_amp():
         update_image(amp_cont, "media/amp_plot.png")
         update_image(tmln_cont, "media/timeline.png")
-        print("Ready for Analysis!")
         status.set(" Ready for Analysis!")   
 
 def update_image(cont, file):
@@ -82,36 +78,28 @@ def update_image(cont, file):
         tln_img = ImageTk.PhotoImage(Image.open(str(file)).resize((int(1.2*lower_frame.winfo_width()), int(lower_frame.winfo_height()/5))))
         lower_frame.itemconfig(cont, image=tln_img)
     else: 
-        print("Error in update_image(): Canvas not found")
         status.set("Error in update_image(): Canvas not found")
 
 
 def analyze_audio():
-    print("Analyzing Audio...")
     status.set(" Analyzing Audio...")
     root.update_idletasks()
-    print("Plotting Time-Frequency Analysis...")
     status.set(" Generating Time-Frequency Analysis...")
     root.update_idletasks()
     if (plots.plot_tf()):
         update_image(tf_cont, "media/tf_plot.png")
-    
-    print("Analyzing Key...")
     status.set(" Analyzing Key (This may take a while)...")
     root.update_idletasks()
     key.set(keys.determine_key())
     
-    print("Analyzing Tempo...")
     status.set(" Analyzing Tempo...")
     root.update_idletasks()
     bpm.set(tempo.find_tempo())
     
-    print("Analyzing Loudness...")
     status.set(" Analyzing Loudness...")
     root.update_idletasks()
     norm.set(str(loudness.find_loudness()) + " dB")
 
-    print("Analysis Complete!")
     status.set(" Analysis Complete!")   
 
 def do_zoom(event):
